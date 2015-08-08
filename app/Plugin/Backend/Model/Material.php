@@ -1,0 +1,5 @@
+<?php 
+class Material extends BackendAppModel {
+	var $name = 'Material';	var $useTable = 'materials';	var $actsAs = array('Multivalidatable');
+	var $validationSets = array(	'NewMaterial'=>array(			'name' => array(				'notEmpty' =>array(					'rule' 		=> 'notEmpty',					'required' 	=> true,					'message' 	=> 'Please enter material'				),				'isUnique' =>  array(				   					'rule'		=> 'isUniqueName',					'required'	=> true,					'message' 	=> 'Material already exist'					)			)		)	);	// Check unique name	function isUniqueName() {		if(isset($this->data['Material']['name'])){			$conditions = array();			if(!empty($this->data['Material']['id'])){				$conditions['id <>'] 	= $this->data['Material']['id'];				$conditions['name'] = $this->data['Material']['name'];			}else{				$conditions['name']  = $this->data['Material']['name'];			}						$get_rec = $this->find('count',array('conditions'=>$conditions));			if($get_rec > 0){				return false;			}else{				return true;			}		}	}
+};?>
